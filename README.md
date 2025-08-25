@@ -101,3 +101,7 @@ A RAG-driven architecture that unifies structured data ingestion, intelligent AI
 - **Response caching** with TTL
 - **Model quantization** for faster inference
 - **Memory optimization** and garbage collection 
+
+## Getting Started
+
+See `README-QUICKSTART.md` for a from-scratch setup and run guide.

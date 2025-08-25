@@ -13,12 +13,12 @@ services:
       - SECRET_KEY=your-super-secret-key-change-this-in-production
       - REDIS_URL=redis://redis:6379
       - VECTOR_DB_TYPE=chroma
-      - VECTOR_DB_PATH=./vector_db
+      - VECTOR_DB_PATH=./storage/vector_db
       - ENABLE_CACHE=true
       - ENABLE_METRICS=true
     volumes:
-      - vector_db_data:/app/vector_db
-      - ./logs:/app/logs
+      - vector_db_data:/app/storage/vector_db
+      - ./logs:/app/storage/logs
     depends_on:
       - redis
       - qdrant

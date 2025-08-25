@@ -10,7 +10,7 @@ from datetime import datetime
 import uuid
 
 from config import settings, VectorDBType
-from models import DocumentType, Source, DocumentInfo
+from autoquest.api.schemas.core import DocumentType, Source, DocumentInfo
 from document_processor import DocumentProcessor
 from pathlib import Path
 

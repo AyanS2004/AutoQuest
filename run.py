@@ -75,10 +75,10 @@ def run_fastapi_app(args):
         raise ImportError(f"Missing packages: {missing_packages}")
     
     import uvicorn
-    from main import app
+    from autoquest.api.app import app
     
     uvicorn.run(
-        "main:app",
+        "autoquest.api.app:app",
         host=args.host,
         port=args.port,
         reload=args.debug,

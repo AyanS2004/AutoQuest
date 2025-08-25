@@ -312,7 +312,7 @@ class FinalPerfectGCCExtractor:
 
     def setup_logging(self):
         """Setup comprehensive logging"""
-        logs_dir = Path('logs')
+        logs_dir = Path('storage') / 'logs'
         logs_dir.mkdir(exist_ok=True)
         
         log_path = logs_dir / self.log_file

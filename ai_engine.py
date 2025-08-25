@@ -13,7 +13,7 @@ import numpy as np
 
 from config import settings, ModelType
 import redis
-from models import QuestionRequest, AnswerResponse, Source, QuestionType, ChatMessage, ChatRequest, ChatResponse
+from autoquest.api.schemas.core import QuestionRequest, AnswerResponse, Source, QuestionType, ChatMessage, ChatRequest, ChatResponse
 
 
 logger = logging.getLogger(__name__)

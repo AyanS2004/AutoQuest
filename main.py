@@ -28,15 +28,15 @@ import sentry_sdk
 from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
 from jose import jwt, JWTError
 import secrets
-from models import (
-    QuestionRequest, AnswerResponse, ChatRequest, ChatResponse, 
+from autoquest.api.schemas.core import (
+    QuestionRequest, AnswerResponse, ChatRequest, ChatResponse,
     HealthResponse, ErrorResponse, BatchQuestionRequest, BatchAnswerResponse,
     SearchRequest, SearchResponse, DocumentInfo
 )
 from advanced_rag import AdvancedRAG
 from ai_engine import AIEngine
 from document_processor import DocumentProcessor
-from models import DocumentType
+from autoquest.api.schemas.core import DocumentType
 from pydantic import BaseModel
 from gcc_copilot import FinalPerfectGCCExtractor
 
@@ -100,7 +100,7 @@ def _run_gcc_extractor(session_id: str):
         )
         extractor.debug_port = session.get("debug_port", 9222)
         session["extractor"] = extractor
-        session["log_file"] = str(Path("logs") / extractor.log_file)
+        session["log_file"] = str(Path("storage") / "logs" / extractor.log_file)
         session["db_file"] = extractor.db_file
 
         success = extractor.run_final_perfect_gcc_extraction()
@@ -191,8 +191,8 @@ async def gcc_download(filename: str, token: str = Depends(verify_token)):
     if not file_path.suffix.lower() in allowed_suffixes:
         raise HTTPException(status_code=400, detail="Invalid file type")
     if not file_path.exists():
-        # Also check under logs/
-        alt = Path("logs") / filename
+        # Also check under storage/logs/
+        alt = Path("storage") / "logs" / filename
         if alt.exists():
             file_path = alt
         else:
