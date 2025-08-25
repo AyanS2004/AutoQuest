@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAGbot Pro - AI-Powered Document Q&A</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chat-section, .upload-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #4a5568;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .chat-container {
+            height: 400px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            background: #f7fafc;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background: #4299e1;
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .bot-message {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .message-time {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input:focus {
+            border-color: #4299e1;
+        }
+
+        .send-btn {
+            padding: 12px 24px;
+            background: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .send-btn:hover {
+            background: #3182ce;
+        }
+
+        .send-btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #4299e1;
+        }
+
+        .upload-area.dragover {
+            border-color: #4299e1;
+            background: #ebf8ff;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #a0aec0;
+            margin-bottom: 15px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            padding: 12px 24px;
+            background: #48bb78;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .upload-btn:hover {
+            background: #38a169;
+        }
+
+        .upload-btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        .file-list {
+            margin-top: 20px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .file-name {
+            font-weight: 500;
+        }
+
+        .file-size {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .remove-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .remove-btn:hover {
+            background: #e53e3e;
+        }
+
+        .stats-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 4px solid #4299e1;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4299e1;
+        }
+
+        .stat-label {
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4299e1;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .success {
+            background: #c6f6d5;
+            color: #2f855a;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .confidence-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f56565, #ed8936, #ecc94b, #48bb78);
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 RAGbot Pro</h1>
+            <p>AI-Powered Document Q&A System</p>
+        </div>
+
+        <div class="stats-section">
+            <h2 class="section-title">System Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="documents-count">0</div>
+                    <div class="stat-label">Documents</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="questions-asked">0</div>
+                    <div class="stat-label">Questions Asked</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avg-confidence">0%</div>
+                    <div class="stat-label">Avg Confidence</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="response-time">0s</div>
+                    <div class="stat-label">Avg Response Time</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="chat-section">
+                <h2 class="section-title">💬 Ask Questions</h2>
+                <div class="chat-container" id="chat-container">
+                    <div class="message bot-message">
+                        <div>Hello! I'm RAGbot Pro. I can help you find answers in your documents. Ask me anything!</div>
+                        <div class="message-time">Just now</div>
+                    </div>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <div>Thinking...</div>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" class="chat-input" id="question-input" placeholder="Ask a question about your documents..." />
+                    <button class="send-btn" id="send-btn">Send</button>
+                </div>
+            </div>
+
+            <div class="upload-section">
+                <h2 class="section-title">📁 Upload Documents</h2>
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-icon">📄</div>
+                    <div>Drag and drop files here or click to browse</div>
+                    <div style="font-size: 0.9rem; color: #718096; margin-top: 10px;">
+                        Supports: Excel (.xlsx), CSV, Text (.txt), Markdown (.md)
+                    </div>
+                    <input type="file" class="file-input" id="file-input" multiple accept=".xlsx,.csv,.txt,.md" />
+                    <button class="upload-btn" id="upload-btn">Choose Files</button>
+                </div>
+
+                <div class="file-list" id="file-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class RAGbotInterface {
+            constructor() {
+                this.apiUrl = 'http://localhost:8000';
+                this.files = [];
+                this.stats = {
+                    documentsCount: 0,
+                    questionsAsked: 0,
+                    totalConfidence: 0,
+                    totalResponseTime: 0
+                };
+                
+                this.initializeEventListeners();
+                this.loadStats();
+            }
+
+            initializeEventListeners() {
+                // Chat functionality
+                const questionInput = document.getElementById('question-input');
+                const sendBtn = document.getElementById('send-btn');
+                const chatContainer = document.getElementById('chat-container');
+
+                sendBtn.addEventListener('click', () => this.askQuestion());
+                questionInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.askQuestion();
+                });
+
+                // File upload functionality
+                const uploadArea = document.getElementById('upload-area');
+                const fileInput = document.getElementById('file-input');
+                const uploadBtn = document.getElementById('upload-btn');
+
+                uploadArea.addEventListener('click', () => fileInput.click());
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
+                });
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.classList.remove('dragover');
+                });
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                    this.handleFiles(e.dataTransfer.files);
+                });
+
+                fileInput.addEventListener('change', (e) => {
+                    this.handleFiles(e.target.files);
+                });
+
+                uploadBtn.addEventListener('click', () => fileInput.click());
+            }
+
+            async askQuestion() {
+                const questionInput = document.getElementById('question-input');
+                const sendBtn = document.getElementById('send-btn');
+                const loading = document.getElementById('loading');
+                const question = questionInput.value.trim();
+
+                if (!question) return;
+
+                // Add user message
+                this.addMessage(question, 'user');
+                questionInput.value = '';
+                sendBtn.disabled = true;
+                loading.style.display = 'block';
+
+                try {
+                    const startTime = Date.now();
+                    const response = await fetch(`${this.apiUrl}/ask`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ question })
+                    });
+
+                    const data = await response.json();
+                    const responseTime = (Date.now() - startTime) / 1000;
+
+                    if (response.ok) {
+                        this.addMessage(data.answer, 'bot', data.confidence, responseTime);
+                        this.updateStats(data.confidence, responseTime);
+                    } else {
+                        this.addMessage(`Error: ${data.error || 'Failed to get response'}`, 'bot', 0, responseTime);
+                    }
+                } catch (error) {
+                    this.addMessage('Sorry, I encountered an error. Please try again.', 'bot', 0, 0);
+                    console.error('Error:', error);
+                } finally {
+                    sendBtn.disabled = false;
+                    loading.style.display = 'none';
+                }
+            }
+
+            addMessage(text, sender, confidence = null, responseTime = null) {
+                const chatContainer = document.getElementById('chat-container');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+
+                let messageContent = `<div>${text}</div>`;
+                
+                if (confidence !== null) {
+                    const confidencePercent = Math.round(confidence * 100);
+                    messageContent += `
+                        <div style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">
+                            Confidence: ${confidencePercent}%
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" style="width: ${confidencePercent}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (responseTime !== null) {
+                    messageContent += `<div style="margin-top: 5px; font-size: 0.8rem; opacity: 0.7;">Response time: ${responseTime.toFixed(2)}s</div>`;
+                }
+
+                messageContent += `<div class="message-time">${new Date().toLocaleTimeString()}</div>`;
+                messageDiv.innerHTML = messageContent;
+
+                chatContainer.appendChild(messageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            handleFiles(fileList) {
+                Array.from(fileList).forEach(file => {
+                    if (this.isValidFile(file)) {
+                        this.files.push(file);
+                        this.displayFile(file);
+                        this.uploadFile(file);
+                    }
+                });
+            }
+
+            isValidFile(file) {
+                const validTypes = ['.xlsx', '.csv', '.txt', '.md'];
+                const extension = '.' + file.name.split('.').pop().toLowerCase();
+                return validTypes.includes(extension);
+            }
+
+            displayFile(file) {
+                const fileList = document.getElementById('file-list');
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div>
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${this.formatFileSize(file.size)}</div>
+                    </div>
+                    <button class="remove-btn" onclick="this.parentElement.remove()">Remove</button>
+                `;
+                fileList.appendChild(fileItem);
+            }
+
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            async uploadFile(file) {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                try {
+                    const response = await fetch(`${this.apiUrl}/upload`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        this.showNotification('File uploaded successfully!', 'success');
+                        this.loadStats();
+                    } else {
+                        this.showNotification('Failed to upload file', 'error');
+                    }
+                } catch (error) {
+                    this.showNotification('Error uploading file', 'error');
+                    console.error('Upload error:', error);
+                }
+            }
+
+            async loadStats() {
+                try {
+                    const response = await fetch(`${this.apiUrl}/stats`);
+
+                    if (response.ok) {
+                        const stats = await response.json();
+                        this.updateStatsDisplay(stats);
+                    }
+                } catch (error) {
+                    console.error('Error loading stats:', error);
+                }
+            }
+
+            updateStatsDisplay(stats) {
+                document.getElementById('documents-count').textContent = stats.document_count || 0;
+                document.getElementById('questions-asked').textContent = stats.questions_asked || 0;
+                document.getElementById('avg-confidence').textContent = `${Math.round((stats.avg_confidence || 0) * 100)}%`;
+                document.getElementById('response-time').textContent = `${(stats.avg_response_time || 0).toFixed(2)}s`;
+            }
+
+            updateStats(confidence, responseTime) {
+                this.stats.questionsAsked++;
+                this.stats.totalConfidence += confidence;
+                this.stats.totalResponseTime += responseTime;
+
+                const avgConfidence = this.stats.totalConfidence / this.stats.questionsAsked;
+                const avgResponseTime = this.stats.totalResponseTime / this.stats.questionsAsked;
+
+                document.getElementById('questions-asked').textContent = this.stats.questionsAsked;
+                document.getElementById('avg-confidence').textContent = `${Math.round(avgConfidence * 100)}%`;
+                document.getElementById('response-time').textContent = `${avgResponseTime.toFixed(2)}s`;
+            }
+
+            showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.className = type;
+                notification.textContent = message;
+                notification.style.position = 'fixed';
+                notification.style.top = '20px';
+                notification.style.right = '20px';
+                notification.style.zIndex = '1000';
+                notification.style.minWidth = '300px';
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        }
+
+        // Initialize the interface when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new RAGbotInterface();
+        });
+    </script>
+</body>
+</html> 

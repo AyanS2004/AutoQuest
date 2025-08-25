@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+
+# Tests / Coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs / Temp / Uploads
+logs/
+*.log
+temp/
+uploads/
+backups/
+
+# Data stores / Vector DBs
+*.db
+vector_db/
+qdrant_data/
+prometheus_data/
+redis_data/
+
+# Generated Excel outputs
+solutions.xlsx
+FINAL_PERFECT_*.xlsx
+FINAL_PERFECT_BACKUP_*.xlsx
+FINAL_PERFECT_*.log
+
+# Docker
+*.pid
+
+
+

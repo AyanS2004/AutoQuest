@@ -1,0 +1,30 @@
+# Minimal RAGbot Requirements for Python 3.12
+# Core Framework
+flask==2.3.3
+flask-cors==4.0.0
+werkzeug==2.3.7
+
+# AI & ML (minimal)
+transformers==4.36.0
+torch==2.2.0
+sentence-transformers==2.2.2
+
+# Vector Database
+faiss-cpu>=1.11.0
+
+# Data Processing
+pandas==2.1.4
+openpyxl==3.1.2
+numpy>=1.26.0
+
+# Document Processing
+PyPDF2==3.0.1
+python-docx==1.1.0
+
+# Utilities
+python-dotenv==1.0.0
+requests==2.31.0
+
+# Python 3.12 compatibility
+setuptools>=68.0.0
+wheel>=0.40.0
