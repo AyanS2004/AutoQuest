@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from '../components/ui/alert';
 import { Badge } from '../components/ui/badge';
 import { 
   Play, 
-  Stop, 
+  Square, 
   Download, 
   Upload, 
   FileText, 
@@ -167,7 +167,7 @@ const GCC = () => {
       case 'running': return <Play className="w-4 h-4" />;
       case 'completed': return <CheckCircle className="w-4 h-4" />;
       case 'error': return <AlertCircle className="w-4 h-4" />;
-      case 'stopped': return <Stop className="w-4 h-4" />;
+      case 'stopped': return <Square className="w-4 h-4" />;
       default: return <Clock className="w-4 h-4" />;
     }
   };
@@ -295,7 +295,7 @@ const GCC = () => {
                 variant="destructive"
                 className="flex-1"
               >
-                <Stop className="w-4 h-4 mr-2" />
+                <Square className="w-4 h-4 mr-2" />
                 Stop
               </Button>
             </div>

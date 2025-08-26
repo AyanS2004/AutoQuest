@@ -8,7 +8,7 @@ import subprocess
 import sys
 import time
 import os
-import signal
+import signaln 
 import threading
 from pathlib import Path
 
@@ -73,7 +73,11 @@ def start_frontend():
         # Check if node_modules exists
         if not (frontend_dir / "node_modules").exists():
             print("📦 Installing frontend dependencies...")
-            subprocess.run(["npm", "install"], cwd=frontend_dir, check=True)
+            try:
+                subprocess.run(["npm", "install"], cwd=frontend_dir, check=True, shell=True)
+            except subprocess.CalledProcessError as e:
+                print(f"❌ Failed to install frontend dependencies: {e}")
+                return False
         
         print("✅ Frontend dependencies OK")
         print("💡 To start frontend manually: cd frontend && npm run dev")

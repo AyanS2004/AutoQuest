@@ -23,7 +23,11 @@ def main():
         # Check if node_modules exists
         if not (frontend_dir / "node_modules").exists():
             print("📦 Installing frontend dependencies...")
-            subprocess.run(["npm", "install"], cwd=frontend_dir, check=True)
+            try:
+                subprocess.run(["npm", "install"], cwd=frontend_dir, check=True, shell=True)
+            except subprocess.CalledProcessError as e:
+                print(f"❌ Failed to install dependencies: {e}")
+                return 1
         
         print("✅ Frontend dependencies ready")
         print()
@@ -36,7 +40,11 @@ def main():
         print("=" * 50)
         
         # Start the development server
-        subprocess.run(["npm", "run", "dev"], cwd=frontend_dir)
+        try:
+            subprocess.run(["npm", "run", "dev"], cwd=frontend_dir, shell=True)
+        except subprocess.CalledProcessError as e:
+            print(f"❌ Failed to start development server: {e}")
+            return 1
         
     except KeyboardInterrupt:
         print("\n👋 Frontend server stopped")
