@@ -11,7 +11,7 @@ function Documents() {
     setError('');
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token') || localStorage.getItem('auth_token');
       if (!token) {
         setError('No authentication token found. Please get a token first.');
         return;
@@ -23,7 +23,7 @@ function Documents() {
         }
       });
 
-      setDocuments(response.data.documents || []);
+      setDocuments(response.data.documents || response.data || []);
     } catch (err) {
       console.error('Error fetching documents:', err);
       setError(err.response?.data?.detail || 'Failed to fetch documents');
@@ -50,28 +50,25 @@ function Documents() {
 
   return (
     <div>
-      <div className="page-header">
-        <h1 className="page-title">Document Library</h1>
-        <p className="page-subtitle">Browse and manage your knowledge base documents</p>
-      </div>
+
 
       <div className="card">
         <div className="card-header">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="card-title">📚 Documents</h3>
+              <h3 className="card-title">Documents</h3>
               <p className="card-subtitle">
                 {documents.length} document{documents.length !== 1 ? 's' : ''} in your knowledge base
               </p>
             </div>
             <button 
               onClick={fetchDocuments}
-              className="btn btn-secondary"
+              className="btn btn-secondary btn-sm"
               disabled={loading}
             >
               {loading ? (
                 <>
-                  <span className="loading"></span>
+                  <span className="animate-spin inline-block h-4 w-4 border-2 border-input border-t-transparent rounded-full mr-2" />
                   Loading...
                 </>
               ) : (
@@ -89,19 +86,19 @@ function Documents() {
 
         {loading && documents.length === 0 ? (
           <div className="text-center py-8">
-            <div className="loading" style={{ width: '40px', height: '40px', margin: '0 auto 1rem' }}></div>
+            <div className="animate-spin rounded-full h-10 w-10 border-2 border-primary border-t-transparent mx-auto mb-4"></div>
             <p>Loading documents...</p>
           </div>
         ) : documents.length === 0 ? (
           <div className="text-center py-8">
             <div className="text-4xl mb-4">📄</div>
-            <h4>No Documents Found</h4>
-            <p className="text-secondary">
+            <h4 className="text-lg font-semibold">No Documents Found</h4>
+            <p className="text-muted-foreground">
               Upload some documents to get started with your knowledge base.
             </p>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-3 p-6 pt-0">
             {documents.map((doc, index) => (
               <div key={doc.id || index} className="document-item">
                 <div className="document-info">
@@ -114,8 +111,8 @@ function Documents() {
                     {doc.file_size && (
                       <span> • Size: {formatFileSize(doc.file_size)}</span>
                     )}
-                    {doc.chunks_count && (
-                      <span> • Chunks: {doc.chunks_count}</span>
+                    {(doc.chunks_count || doc.chunk_count) && (
+                      <span> • Chunks: {doc.chunks_count || doc.chunk_count}</span>
                     )}
                     {doc.metadata && Object.keys(doc.metadata).length > 0 && (
                       <span> • Has metadata</span>
@@ -126,7 +123,7 @@ function Documents() {
                 <div className="flex gap-2">
                   {doc.metadata && Object.keys(doc.metadata).length > 0 && (
                     <button 
-                      className="btn btn-sm btn-outline"
+                      className="btn btn-outline btn-sm"
                       onClick={() => alert(JSON.stringify(doc.metadata, null, 2))}
                     >
                       View Metadata
@@ -139,35 +136,35 @@ function Documents() {
         )}
       </div>
 
-      <div className="grid grid-2 mt-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
         <div className="card">
           <div className="card-header">
-            <h3 className="card-title">📊 Document Statistics</h3>
+            <h3 className="card-title">Document Statistics</h3>
             <p className="card-subtitle">Overview of your knowledge base</p>
           </div>
 
-          <div className="grid grid-2">
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <div className="text-2xl font-bold text-blue-600">{documents.length}</div>
-              <div className="text-sm text-blue-600">Total Documents</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-6 pt-0">
+            <div className="text-center p-4 bg-muted rounded-lg">
+              <div className="text-2xl font-bold">{documents.length}</div>
+              <div className="text-sm text-muted-foreground">Total Documents</div>
             </div>
             
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-              <div className="text-2xl font-bold text-green-600">
-                {documents.reduce((sum, doc) => sum + (doc.chunks_count || 0), 0)}
+            <div className="text-center p-4 bg-muted rounded-lg">
+              <div className="text-2xl font-bold">
+                {documents.reduce((sum, doc) => sum + (doc.chunks_count || doc.chunk_count || 0), 0)}
               </div>
-              <div className="text-sm text-green-600">Total Chunks</div>
+              <div className="text-sm text-muted-foreground">Total Chunks</div>
             </div>
           </div>
 
-          <div className="mt-4">
-            <h4>File Types:</h4>
+          <div className="p-6 pt-0">
+            <h4 className="font-medium">File Types:</h4>
             <div className="flex flex-wrap gap-2 mt-2">
               {Array.from(new Set(documents.map(doc => {
                 const filename = doc.filename || doc.name || '';
                 return filename.split('.').pop()?.toUpperCase() || 'UNKNOWN';
               }))).map(type => (
-                <span key={type} className="px-2 py-1 bg-gray-100 rounded text-sm">
+                <span key={type} className="px-2 py-1 bg-muted rounded text-xs">
                   {type}
                 </span>
               ))}
@@ -177,17 +174,17 @@ function Documents() {
 
         <div className="card">
           <div className="card-header">
-            <h3 className="card-title">🔍 Search & Filter</h3>
+            <h3 className="card-title">Search & Filter</h3>
             <p className="card-subtitle">Find specific documents</p>
           </div>
 
-          <div>
-            <p className="text-secondary mb-4">
+          <div className="p-6 pt-0">
+            <p className="text-muted-foreground mb-4">
               Use the search functionality in the Ask or Chat pages to find information within your documents.
             </p>
 
-            <h4>Search Tips:</h4>
-            <ul>
+            <h4 className="font-medium">Search Tips:</h4>
+            <ul className="list-disc pl-5 space-y-1 text-sm">
               <li>Ask specific questions about document content</li>
               <li>Reference document names or topics</li>
               <li>Use natural language queries</li>
@@ -195,8 +192,8 @@ function Documents() {
             </ul>
 
             <div className="mt-4">
-              <h4>Recent Activity:</h4>
-              <p className="text-sm text-secondary">
+              <h4 className="font-medium">Recent Activity:</h4>
+              <p className="text-sm text-muted-foreground">
                 Documents are automatically indexed when uploaded and can be searched immediately.
               </p>
             </div>
@@ -206,24 +203,24 @@ function Documents() {
 
       <div className="card mt-5">
         <div className="card-header">
-          <h3 className="card-title">📋 API Endpoint</h3>
+          <h3 className="card-title">API Endpoint</h3>
           <p className="card-subtitle">Documents endpoint details</p>
         </div>
         
-        <div className="grid grid-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 pt-0">
           <div>
-            <h4>GET /documents</h4>
-            <p>Retrieve all documents in the knowledge base</p>
-            <pre className="block p-2 bg-gray-100 rounded text-sm">
+            <h4 className="font-medium">GET /documents</h4>
+            <p className="text-sm text-muted-foreground">Retrieve all documents in the knowledge base</p>
+            <pre className="block p-2 bg-muted rounded text-sm mt-2">
               curl -H "Authorization: Bearer YOUR_TOKEN" \
                 http://localhost:8000/documents
             </pre>
           </div>
           
           <div>
-            <h4>Response Format</h4>
-            <p>Returns list of documents with metadata</p>
-            <pre className="block p-2 bg-gray-100 rounded text-sm">
+            <h4 className="font-medium">Response Format</h4>
+            <p className="text-sm text-muted-foreground">Returns list of documents with metadata</p>
+            <pre className="block p-2 bg-muted rounded text-sm mt-2">
               {`{
   "documents": [
     {

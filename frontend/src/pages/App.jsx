@@ -14,7 +14,7 @@ function App() {
       <div className="grid grid-3">
         <div className="card">
           <div className="card-header">
-            <h3 className="card-title">🔐 Authentication</h3>
+            <h3 className="card-title">Authentication</h3>
             <p className="card-subtitle">Get your JWT token to access the API</p>
           </div>
           <p>

@@ -55,7 +55,7 @@ function Research() {
     setResearchProgress({ current: 0, total: companies.length, status: 'Starting research...' });
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token') || localStorage.getItem('auth_token');
       if (!token) {
         setMessage('No authentication token found. Please get a token first.');
         setMessageType('error');
@@ -95,7 +95,7 @@ function Research() {
   };
 
   const pollResearchProgress = async (researchId) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') || localStorage.getItem('auth_token');
     
     const pollInterval = setInterval(async () => {
       try {
@@ -139,13 +139,9 @@ function Research() {
 
   return (
     <div>
-      <div className="page-header">
-        <h1 className="page-title">Company Research</h1>
-        <p className="page-subtitle">Excel-like interface for automated company research using Selenium</p>
-      </div>
 
       {message && (
-        <div className={`alert alert-${messageType}`}>
+        <div className={`alert ${messageType === 'success' ? 'alert-success' : 'alert-error'}`}>
           {message}
         </div>
       )}
@@ -154,7 +150,7 @@ function Research() {
         <div className="card-header">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="card-title">📊 Research Table</h3>
+              <h3 className="card-title">Research Table</h3>
               <p className="card-subtitle">Enter companies and research fields</p>
             </div>
             <div className="flex gap-2">
@@ -261,11 +257,11 @@ function Research() {
           >
             {loading ? (
               <>
-                <span className="loading"></span>
+                <span className="loading mr-2" />
                 Researching...
               </>
             ) : (
-              '🚀 Start Research'
+              'Start Research'
             )}
           </button>
 
@@ -274,7 +270,7 @@ function Research() {
               onClick={downloadExcel}
               className="btn btn-success"
             >
-              📥 Download Excel
+              Download Excel
             </button>
           )}
         </div>
@@ -283,11 +279,11 @@ function Research() {
       {researchProgress && (
         <div className="card mt-5">
           <div className="card-header">
-            <h3 className="card-title">📈 Research Progress</h3>
+            <h3 className="card-title">Research Progress</h3>
             <p className="card-subtitle">Current status of automated research</p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4 p-6 pt-0">
             <div className="flex justify-between items-center">
               <span className="font-medium">Status:</span>
               <span className={`status-badge status-${researchProgress.status}`}>
@@ -301,9 +297,9 @@ function Research() {
                   <span className="font-medium">Progress:</span>
                   <span>{researchProgress.current} / {researchProgress.total} companies</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-muted rounded-full h-2">
                   <div 
-                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                    className="bg-primary h-2 rounded-full transition-all duration-300"
                     style={{ width: `${(researchProgress.current / researchProgress.total) * 100}%` }}
                   ></div>
                 </div>
@@ -311,7 +307,7 @@ function Research() {
             )}
 
             {researchProgress.current_company && (
-              <div className="bg-gray-50 p-3 rounded">
+              <div className="bg-muted p-3 rounded">
                 <span className="font-medium">Currently researching:</span> {researchProgress.current_company}
               </div>
             )}
@@ -319,9 +315,9 @@ function Research() {
             {researchProgress.logs && researchProgress.logs.length > 0 && (
               <div>
                 <h4 className="font-medium mb-2">Recent Activity:</h4>
-                <div className="bg-gray-50 p-3 rounded max-h-32 overflow-y-auto">
+                <div className="bg-muted p-3 rounded max-h-40 overflow-y-auto">
                   {researchProgress.logs.slice(-5).map((log, index) => (
-                    <div key={index} className="text-sm text-gray-600 mb-1">
+                    <div key={index} className="text-sm text-muted-foreground mb-1">
                       {log}
                     </div>
                   ))}
@@ -332,72 +328,80 @@ function Research() {
         </div>
       )}
 
-      <div className="grid grid-2 mt-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
         <div className="card">
           <div className="card-header">
-            <h3 className="card-title">🔍 How It Works</h3>
+            <h3 className="card-title">How It Works</h3>
             <p className="card-subtitle">Automated research process</p>
           </div>
 
-          <div>
-            <h4>Research Process:</h4>
-            <ol>
-              <li><strong>Data Entry:</strong> Enter companies and research fields</li>
-              <li><strong>Selenium Automation:</strong> Automated web scraping and data collection</li>
-              <li><strong>Excel Generation:</strong> Compile research data into Excel format</li>
-              <li><strong>RAG Integration:</strong> Upload Excel to knowledge base</li>
-              <li><strong>Chat Analysis:</strong> Ask questions about the research data</li>
-            </ol>
+          <div className="p-6 pt-0 space-y-4">
+            <div>
+              <h4 className="font-medium">Research Process:</h4>
+              <ol className="list-decimal pl-5 space-y-1 text-sm">
+                <li><strong>Data Entry:</strong> Enter companies and research fields</li>
+                <li><strong>Selenium Automation:</strong> Automated web scraping and data collection</li>
+                <li><strong>Excel Generation:</strong> Compile research data into Excel format</li>
+                <li><strong>RAG Integration:</strong> Upload Excel to knowledge base</li>
+                <li><strong>Chat Analysis:</strong> Ask questions about the research data</li>
+              </ol>
+            </div>
 
-            <h4 className="mt-4">Research Fields Examples:</h4>
-            <ul>
-              <li>Financial performance, revenue, profit margins</li>
-              <li>Market share, competitors, industry position</li>
-              <li>Product portfolio, services, technology stack</li>
-              <li>Leadership team, company history, recent news</li>
-              <li>Customer reviews, ratings, social media presence</li>
-            </ul>
+            <div>
+              <h4 className="font-medium">Research Fields Examples:</h4>
+              <ul className="list-disc pl-5 space-y-1 text-sm">
+                <li>Financial performance, revenue, profit margins</li>
+                <li>Market share, competitors, industry position</li>
+                <li>Product portfolio, services, technology stack</li>
+                <li>Leadership team, company history, recent news</li>
+                <li>Customer reviews, ratings, social media presence</li>
+              </ul>
+            </div>
           </div>
         </div>
 
         <div className="card">
           <div className="card-header">
-            <h3 className="card-title">💡 Tips for Better Research</h3>
+            <h3 className="card-title">Tips for Better Research</h3>
             <p className="card-subtitle">Optimize your research results</p>
           </div>
 
-          <div>
-            <h4>Best Practices:</h4>
-            <ul>
-              <li>Use specific, focused research fields</li>
-              <li>Include company websites when available</li>
-              <li>Group similar companies for comparison</li>
-              <li>Be patient - research takes time</li>
-              <li>Check the Chat page to analyze results</li>
-            </ul>
+          <div className="p-6 pt-0 space-y-4">
+            <div>
+              <h4 className="font-medium">Best Practices:</h4>
+              <ul className="list-disc pl-5 space-y-1 text-sm">
+                <li>Use specific, focused research fields</li>
+                <li>Include company websites when available</li>
+                <li>Group similar companies for comparison</li>
+                <li>Be patient - research takes time</li>
+                <li>Check the Chat page to analyze results</li>
+              </ul>
+            </div>
 
-            <h4 className="mt-4">After Research:</h4>
-            <ul>
-              <li>Download the Excel file for manual review</li>
-              <li>Use the Chat interface to ask questions</li>
-              <li>Compare companies using natural language</li>
-              <li>Generate insights and summaries</li>
-            </ul>
+            <div>
+              <h4 className="font-medium">After Research:</h4>
+              <ul className="list-disc pl-5 space-y-1 text-sm">
+                <li>Download the Excel file for manual review</li>
+                <li>Use the Chat interface to ask questions</li>
+                <li>Compare companies using natural language</li>
+                <li>Generate insights and summaries</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
 
       <div className="card mt-5">
         <div className="card-header">
-          <h3 className="card-title">📋 API Endpoints</h3>
+          <h3 className="card-title">API Endpoints</h3>
           <p className="card-subtitle">Research API details</p>
         </div>
         
-        <div className="grid grid-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 pt-0">
           <div>
-            <h4>POST /research/start</h4>
-            <p>Start automated research for companies</p>
-            <pre className="block p-2 bg-gray-100 rounded text-sm">{`curl -X POST -H "Authorization: Bearer YOUR_TOKEN" \
+            <h4 className="font-medium">POST /research/start</h4>
+            <p className="text-sm text-muted-foreground">Start automated research for companies</p>
+            <pre className="block p-2 bg-muted rounded text-sm mt-2">{`curl -X POST -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"companies": [{"name": "Apple", "research_fields": ["financial", "market"]}]}' \
   http://localhost:8000/research/start`}
@@ -405,9 +409,9 @@ function Research() {
           </div>
           
           <div>
-            <h4>GET /research/status/{'{research_id}'}</h4>
-            <p>Check research progress and status</p>
-            <pre className="block p-2 bg-gray-100 rounded text-sm">
+            <h4 className="font-medium">GET /research/status/{'{research_id}'}</h4>
+            <p className="text-sm text-muted-foreground">Check research progress and status</p>
+            <pre className="block p-2 bg-muted rounded text-sm mt-2">
               curl -H "Authorization: Bearer YOUR_TOKEN" \
                 http://localhost:8000/research/status/123
             </pre>

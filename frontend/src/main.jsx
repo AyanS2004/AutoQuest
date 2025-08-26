@@ -31,6 +31,9 @@ function AppWrapper() {
           <Route path="explorer" element={<DataExplorer />} />
           <Route path="rag-chat" element={<RagChat />} />
           <Route path="logs" element={<Logs />} />
+          {/* Mount documents and research inside layout */}
+          <Route path="documents" element={<Documents />} />
+          <Route path="research" element={<Research />} />
         </Route>
 
         {/* Legacy routes (keeping for compatibility) */}
@@ -39,9 +42,7 @@ function AppWrapper() {
         <Route path="/health" element={<Health />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/ask" element={<Ask />} />
-        <Route path="/documents" element={<Documents />} />
         <Route path="/chat" element={<Chat />} />
-        <Route path="/research" element={<Research />} />
       </Routes>
     </Router>
   );

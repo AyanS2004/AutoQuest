@@ -2,14 +2,14 @@
 
 A modern React-based dashboard for the AutoQuest RAG-powered document analysis system.
 
-## 🎯 UX/UI Goals
+## UX/UI Goals
 
 - **Clarity for researchers** → Show what queries are being run, progress status, and extracted outputs
 - **Exploration** → Let users search and chat with the RAG bot (retrieves from processed SQLite/Excel)
 - **Reliability** → Progress tracking, error logs, and retry visibility
 - **Scalability** → Dashboard view for batches, company-wise drill-downs, and field-level details
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 ### Layout Structure
 - **Left Sidebar** → Navigation tabs (Dashboard, Explorer, RAG Chat, Logs)
@@ -54,7 +54,7 @@ A modern React-based dashboard for the AutoQuest RAG-powered document analysis s
 - **API**: Axios for backend communication
 - **Real-time**: WebSocket support for live updates
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js 18+ 
@@ -78,7 +78,7 @@ The application will be available at `http://localhost:5173`
 npm run build
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
@@ -101,7 +101,7 @@ src/
 └── main.jsx                   # App entry point
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 Create a `.env` file in the frontend directory:
@@ -120,7 +120,7 @@ The frontend expects the following backend endpoints:
 - `POST /chat` - RAG chat endpoint
 - `GET /logs` - Get system logs
 
-## 🎨 Design System
+## Design System
 
 ### Color Palette
 - **Primary**: Blue (#3B82F6)
@@ -140,7 +140,7 @@ The frontend expects the following backend endpoints:
 - **Failed**: Red X
 - **Pending**: Yellow warning
 
-## 🔄 Real-time Features
+## Real-time Features
 
 ### WebSocket Integration
 - Live progress updates
@@ -153,35 +153,35 @@ The frontend expects the following backend endpoints:
 - Log updates every 2 seconds
 - Health checks every 30 seconds
 
-## 📊 Data Flow
+## Data Flow
 
 1. **Dashboard** → Shows high-level stats and controls
 2. **Data Explorer** → Displays extracted company data with editing
 3. **RAG Chat** → Interactive Q&A with document sources
 4. **Logs** → Real-time system monitoring and debugging
 
-## 🚨 Error Handling
+## Error Handling
 
 - **Network Errors**: Automatic retry with exponential backoff
 - **API Errors**: User-friendly error messages
 - **Validation**: Form validation with helpful feedback
 - **Fallbacks**: Graceful degradation when services are unavailable
 
-## 🔒 Security
+## Security
 
 - **Authentication**: JWT token-based auth
 - **CORS**: Configured for secure cross-origin requests
 - **Input Sanitization**: All user inputs are sanitized
 - **HTTPS**: Production deployment requires HTTPS
 
-## 📈 Performance
+## Performance
 
 - **Lazy Loading**: Components loaded on demand
 - **Memoization**: React.memo for expensive components
 - **Debouncing**: Search inputs debounced for performance
 - **Virtualization**: Large data sets use virtual scrolling
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run tests
@@ -191,13 +191,13 @@ npm test
 npm run test:coverage
 ```
 
-## 📝 Contributing
+## Contributing
 
 1. Follow the existing code style
 2. Add tests for new features
 3. Update documentation
 4. Ensure all tests pass
 
-## 📄 License
+## License
 
 This project is part of the AutoQuest system.

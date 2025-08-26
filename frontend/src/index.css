@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+:root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -23,7 +23,7 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+  --radius: 0.5rem;
   }
 
   .dark {
@@ -53,7 +53,7 @@
   * {
     @apply border-border;
   }
-  body {
+body {
     @apply bg-background text-foreground;
   }
 }
@@ -69,7 +69,7 @@
   .btn-sm { @apply h-9 rounded-md px-3; }
   .btn-lg { @apply h-11 rounded-md px-8; }
 
-  /* Cards */
+/* Cards */
   .card { @apply rounded-lg border bg-card text-card-foreground shadow-sm; }
   .card-header { @apply flex flex-col space-y-1.5 p-6; }
   .card-title { @apply text-2xl font-semibold leading-none tracking-tight; }
@@ -98,6 +98,13 @@
   .alert { @apply p-3 rounded border-l-4 mb-3; }
   .alert-success { @apply bg-green-50 text-green-700 border-green-400; }
   .alert-error { @apply bg-red-50 text-red-700 border-red-400; }
+  .form-input { @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2; }
+  .btn-danger { @apply bg-red-600 text-white hover:bg-red-700; }
+
+  /** Helpers for legacy classes used in pages **/
+  .btn-success { @apply bg-green-600 text-white hover:bg-green-700; }
+  .grid-2 { @apply grid-cols-1 md:grid-cols-2 gap-6; }
+  .loading { @apply animate-spin inline-block h-4 w-4 border-2 border-input border-t-transparent rounded-full; }
 }
 
 /* Custom scrollbar */
