@@ -30,7 +30,7 @@ markdown==3.5.1
 beautifulsoup4==4.12.2
 langchain==0.1.0
 langchain-community==0.0.10
-
+ 
 # Caching & Performance
 redis==5.0.1
 celery==5.3.4

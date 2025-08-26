@@ -1,68 +1,278 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
+@layer base {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
   }
-  a:hover {
-    color: #747bff;
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.1%;
   }
-  button {
-    background-color: #f9f9f9;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Buttons */
+  .btn { @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2; }
+  .btn-primary { @apply bg-primary text-primary-foreground hover:bg-primary/90; }
+  .btn-secondary { @apply bg-secondary text-secondary-foreground hover:bg-secondary/80; }
+  .btn-outline { @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground; }
+  .btn-destructive { @apply bg-destructive text-destructive-foreground hover:bg-destructive/90; }
+  .btn-ghost { @apply hover:bg-accent hover:text-accent-foreground; }
+  .btn-sm { @apply h-9 rounded-md px-3; }
+  .btn-lg { @apply h-11 rounded-md px-8; }
+
+  /* Cards */
+  .card { @apply rounded-lg border bg-card text-card-foreground shadow-sm; }
+  .card-header { @apply flex flex-col space-y-1.5 p-6; }
+  .card-title { @apply text-2xl font-semibold leading-none tracking-tight; }
+  .card-subtitle { @apply text-sm text-muted-foreground; }
+
+  .page-header { @apply text-center mb-8 py-6 bg-card border rounded-lg; }
+  .page-title { @apply text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-amber-500 mb-1; }
+  .page-subtitle { @apply text-sm text-muted-foreground; }
+
+  .research-table { @apply w-full border-collapse mt-4; }
+  .research-table th, .research-table td { @apply px-3 py-2 text-left border-b; }
+  .research-table th { @apply bg-muted font-semibold text-foreground; }
+  .research-table tr:hover { @apply bg-muted/50; }
+
+  .document-item { @apply flex items-center justify-between p-4 border rounded-lg bg-card hover:shadow-sm transition mb-2; }
+  .document-info { @apply flex-1; }
+  .document-name { @apply font-semibold text-foreground mb-1; }
+  .document-meta { @apply text-sm text-muted-foreground; }
+
+  .status-badge { @apply inline-block px-2 py-0.5 rounded text-xs font-medium uppercase tracking-wider; }
+  .status-pending { @apply bg-yellow-100 text-yellow-700; }
+  .status-researching { @apply bg-blue-100 text-blue-700; }
+  .status-completed { @apply bg-green-100 text-green-700; }
+  .status-failed { @apply bg-red-100 text-red-700; }
+
+  .alert { @apply p-3 rounded border-l-4 mb-3; }
+  .alert-success { @apply bg-green-50 text-green-700 border-green-400; }
+  .alert-error { @apply bg-red-50 text-red-700 border-red-400; }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--foreground));
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Status indicators */
+.status-indicator {
+  @apply inline-block w-2 h-2 rounded-full;
+}
+
+.status-success {
+  @apply bg-green-500;
+}
+
+.status-warning {
+  @apply bg-yellow-500;
+}
+
+.status-error {
+  @apply bg-red-500;
+}
+
+.status-info {
+  @apply bg-blue-500;
+}
+
+/* Progress bar */
+.progress-bar {
+  @apply w-full bg-secondary rounded-full h-2;
+}
+
+.progress-fill {
+  @apply bg-primary h-2 rounded-full transition-all duration-300;
+}
+
+/* Chat message styles */
+.chat-message {
+  @apply p-4 rounded-lg mb-4;
+}
+
+.chat-message-user {
+  @apply bg-primary text-primary-foreground ml-8;
+}
+
+.chat-message-assistant {
+  @apply bg-muted mr-8;
+}
+
+/* Data grid styles */
+.data-grid {
+  @apply w-full border-collapse;
+}
+
+.data-grid th {
+  @apply bg-muted px-4 py-3 text-left text-sm font-medium text-muted-foreground;
+}
+
+.data-grid td {
+  @apply px-4 py-3 text-sm border-b;
+}
+
+.data-grid tr:hover {
+  @apply bg-muted/50;
+}
+
+/* Sidebar styles */
+.sidebar {
+  @apply w-64 bg-card border-r border-border h-screen fixed left-0 top-0 z-50;
+}
+
+.sidebar-content {
+  @apply p-4;
+}
+
+.sidebar-nav {
+  @apply space-y-2;
+}
+
+.sidebar-nav-item {
+  @apply flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors;
+}
+
+.sidebar-nav-item:hover {
+  @apply bg-accent text-accent-foreground;
+}
+
+.sidebar-nav-item.active {
+  @apply bg-primary text-primary-foreground;
+}
+
+/* Main content area */
+.main-content {
+  @apply ml-64 p-6;
+}
+
+/* Dashboard grid */
+.dashboard-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+}
+
+/* Status cards */
+.status-card {
+  @apply rounded-lg border bg-card text-card-foreground shadow-sm p-6;
+}
+
+.status-card-header {
+  @apply flex items-center justify-between mb-4;
+}
+
+.status-card-title {
+  @apply text-sm font-medium text-muted-foreground;
+}
+
+.status-card-value {
+  @apply text-2xl font-bold;
+}
+
+/* Log styles */
+.log-entry {
+  @apply p-2 text-sm border-b border-border;
+}
+
+.log-entry.info {
+  @apply text-green-600 bg-green-50;
+}
+
+.log-entry.warning {
+  @apply text-yellow-600 bg-yellow-50;
+}
+
+.log-entry.error {
+  @apply text-red-600 bg-red-50;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .sidebar {
+    @apply w-full h-auto relative;
+  }
+  
+  .main-content {
+    @apply ml-0;
+  }
+  
+  .dashboard-grid {
+    @apply grid-cols-1 md:grid-cols-2;
   }
 }
