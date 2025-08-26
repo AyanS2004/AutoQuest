@@ -19,6 +19,7 @@ import Ask from './pages/Ask';
 import Documents from './pages/Documents';
 import Chat from './pages/Chat';
 import Research from './pages/Research';
+import GCC from './pages/GCC';
 
 // Main App component
 function AppWrapper() {
@@ -34,6 +35,7 @@ function AppWrapper() {
           {/* Mount documents and research inside layout */}
           <Route path="documents" element={<Documents />} />
           <Route path="research" element={<Research />} />
+          <Route path="gcc" element={<GCC />} />
         </Route>
 
         {/* Legacy routes (keeping for compatibility) */}

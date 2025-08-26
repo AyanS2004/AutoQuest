@@ -109,6 +109,20 @@ function App() {
              Start Research
            </Link>
          </div>
+
+         <div className="card">
+           <div className="card-header">
+             <h3 className="card-title">☁️ GCC Extraction</h3>
+             <p className="card-subtitle">Google Cloud Console data extraction</p>
+           </div>
+           <p>
+             Automated extraction of data from Google Cloud Console.
+             Configure input files, monitor progress, and download results through a web interface.
+           </p>
+           <Link to="/gcc" className="btn btn-warning">
+             Start GCC Extraction
+           </Link>
+         </div>
       </div>
 
       <div className="card mt-5">
