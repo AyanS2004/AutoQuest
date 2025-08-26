@@ -38,7 +38,7 @@ from ai_engine import AIEngine
 from document_processor import DocumentProcessor
 from autoquest.api.schemas.core import DocumentType
 from pydantic import BaseModel
-from gcc_copilot import FinalPerfectGCCExtractor
+from autoquest.gcc import FinalPerfectGCCExtractor
 
 # Configure structured logging
 structlog.configure(

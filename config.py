@@ -1,4 +1,5 @@
-from pydantic import BaseSettings, Field
+from pydantic import Field
+from pydantic_settings import BaseSettings
 from typing import Optional, List, Dict, Any
 from enum import Enum
 import os
@@ -41,7 +42,7 @@ class Settings(BaseSettings):
     redis_url: Optional[str] = Field(default="redis://localhost:6379", env="REDIS_URL")
     
     # Models
-    embedding_model: EmbeddingModel = EmbeddingModel.BGE
+    embedding_model: EmbeddingModel = Field(default=EmbeddingModel.BGE)
     qa_model: str = "deepset/roberta-base-squad2"
     generation_model: str = "microsoft/DialoGPT-medium"
     chat_model: str = "microsoft/DialoGPT-large"
@@ -89,6 +90,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = False
+        extra = "ignore"
 
 
 # Global settings instance

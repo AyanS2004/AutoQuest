@@ -74,7 +74,7 @@ class AnswerResponse(BaseModel):
 
 
 class ChatMessage(BaseModel):
-    role: str = Field(..., regex="^(user|assistant|system)$")
+    role: str = Field(..., pattern="^(user|assistant|system)$")
     content: str = Field(..., min_length=1)
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
@@ -146,6 +146,8 @@ ChatResponse.update_forward_refs()
 BatchQuestionRequest.update_forward_refs()
 BatchAnswerResponse.update_forward_refs()
 SearchResponse.update_forward_refs()
+
+
 
 
 
