@@ -12,10 +12,13 @@ import {
   Home,
   Search,
   Download,
-  Upload
+  Upload,
+  Sun,
+  Moon
 } from 'lucide-react'
 import { cn } from '../lib/utils'
 import { healthAPI } from '../services/api'
+import { useTheme } from './ThemeProvider'
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: Home },
@@ -29,6 +32,7 @@ const navItems = [
 
 export default function Layout() {
   const location = useLocation()
+  const { isDark, toggleTheme } = useTheme()
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [systemStatus, setSystemStatus] = useState({
     status: 'unknown',
@@ -155,6 +159,18 @@ export default function Layout() {
         </div>
 
         <div className="flex items-center space-x-2">
+          <button 
+            onClick={toggleTheme}
+            className="btn btn-outline btn-sm"
+            aria-label="Toggle theme"
+          >
+            {isDark ? (
+              <Sun className="w-4 h-4 mr-1" />
+            ) : (
+              <Moon className="w-4 h-4 mr-1" />
+            )}
+            {isDark ? 'Light' : 'Dark'}
+          </button>
           <button className="btn btn-outline btn-sm">
             <Upload className="w-4 h-4 mr-1" />
             Upload

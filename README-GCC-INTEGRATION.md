@@ -19,7 +19,11 @@ Your AutoQuest project now has a fully integrated web interface for GCC (Google 
    cd frontend
    npm run dev
    ```
-   The frontend will start on `http://localhost:5173`
+   Or use the convenience script:
+   ```bash
+   python start_frontend.py
+   ```
+   The frontend will start on `http://localhost:5173` with **dark mode enabled by default**
 
 3. **Access the GCC Interface:**
    - Go to `http://localhost:5173`
@@ -131,10 +135,11 @@ python test_gcc_simple.py
 
 The frontend uses:
 - **React 18** with modern hooks
-- **Tailwind CSS** for styling
+- **Tailwind CSS** for styling with **dark mode by default**
 - **Lucide React** for icons
 - **Real-time polling** for status updates
 - **Responsive design** for all screen sizes
+- **Theme toggle** in the top navigation bar
 
 ## 🔐 **Security**
 
